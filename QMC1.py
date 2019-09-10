@@ -81,13 +81,15 @@ def ordenarUnos(matrizBinaria):#Esta funcion ordena los numeros binarios dependi
 	cont=0
 	temp=[]
 	for i in range(0,lon):
-		for j in range(0,lon-2):
+		for j in range(0,tam):
 			if matrizBinaria[j][len(matrizBinaria[1])-1]==i:
-				print("entroooo")
 				temp=matrizBinaria[cont]
 				matrizBinaria[cont]=matrizBinaria[j]
 				matrizBinaria[j]=temp
 				cont=cont+1
+
+
+
 
 		
 
