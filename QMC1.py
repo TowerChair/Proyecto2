@@ -75,15 +75,32 @@ def numUnos(binarios):#Cuenta el numero de unos que tiene cada numero binario y 
 				cont=cont+1
 		binarios[i].append(cont)
 
+def ordenarUnos(matrizBinaria):#Esta funcion ordena los numeros binarios dependiendo de cuantos unos tenga
+	tam=len(matrizBinaria)
+	lon=len(matrizBinaria[1])
+	cont=0
+	temp=[]
+	for i in range(0,lon):
+		for j in range(0,lon-2):
+			if matrizBinaria[j][len(matrizBinaria[1])-1]==i:
+				print("entroooo")
+				temp=matrizBinaria[cont]
+				matrizBinaria[cont]=matrizBinaria[j]
+				matrizBinaria[j]=temp
+				cont=cont+1
 
+		
 
 def main():
 	print("Metodo Q-M-C\n")
 	datos=minterminos()
 	datosBinarios=Mzeros(datos)
-	print(datosBinarios)
 	numUnos(datosBinarios)
 	print(datosBinarios)
+	print("\n")
+	ordenarUnos(datosBinarios)
+	print(datosBinarios)
+
 
 
 main()
