@@ -89,20 +89,84 @@ def ordenarUnos(matrizBinaria):#Esta funcion ordena los numeros binarios dependi
 				cont=cont+1
 
 
+def verificar_potencia(num1,num2):
+	difer=abs(num1-num2)
+	if (difer==1 or difer==2 or difer==4 or difer==8 or difer==16 or difer==32 or difer==64 or difer==128 or difer==256 or difer==512 or difer==1024 or difer==2048 or difer==4096) :
+		return difer
+	else:
+		return 0 
 
 
-		
+def suma_de_binarios(binario1,binario2):
+	cant=len(binario1)-2
+	termsum=[]
+	nothing=[]
+	cont=0
+	for i in range(1,len(binario1)-1):
+		if binario1[i]==binario2[i]:
+			termsum.append(binario1[i])
+		else:
+			termsum.append("_")
+			cont=cont+1
+	if cont!=1:
+		return 0
+	else:
+		return termsum
+
+def formar_matriz_it(primerMatriz):
+	cubo=[]
+	primos=[]
+	flag1=0
+	flag2=0
+	terms=len(primerMatriz)
+	lon=len(primerMatriz[1])
+	temp1=[]
+	temp2=[]
+	matrizindice=[]
+	matrizindice.append([])
+	ciclos=primerMatriz[terms-1][lon-1]
+	for i in range(0,ciclos):
+			temp1=[]
+			temp2=[]
+			for j in range (0,terms):
+				temp1=[]
+				temp2=[]
+				if primerMatriz[j][lon-1]==i:
+					for k in range(0,terms):
+						temp1=[]
+						temp2=[]
+						if primerMatriz[k][lon-1]==i+1:
+							if verificar_potencia(primerMatriz[j][0],primerMatriz[k][0])!=0:
+								temp1=[]
+								temp2=[]
+								temp1.append(primerMatriz[j][0])
+								temp1.append(primerMatriz[k][0])
+								binar=suma_de_binarios(primerMatriz[j],primerMatriz[k])
+								if binar!=0:
+									temp2.append(verificar_potencia(primerMatriz[j][0],primerMatriz[k][0]))
+									temp2.extend(binar)
+									temp2.append(i)
+									print(temp2)
+									matrizindice[0].append(temp1)
+									matrizindice.append(temp2)
+	return matrizindice
+
+
+
+
+
+
+#def ecuacion_final():
+
 
 def main():
 	print("Metodo Q-M-C\n")
 	datos=minterminos()
 	datosBinarios=Mzeros(datos)
 	numUnos(datosBinarios)
-	print(datosBinarios)
-	print("\n")
 	ordenarUnos(datosBinarios)
-	print(datosBinarios)
-
+	data63=formar_matriz_it(datosBinarios)
+	#implicantes(datosBinarios)
 
 
 main()
