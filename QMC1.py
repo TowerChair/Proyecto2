@@ -346,6 +346,7 @@ def formar_matriz_it(primerMatriz):
 
 def main():
 	print("Metodo Quine Mc Cluskey\n DISEÑO DIGITAL MODERNO \n Facultad de ingenieria, Universidad Nacional Autonoma De Mexico \n")
+	print("Instrucciones\n 1.-Ingresa el numero de minterminos\n ingresa los minterminos solo con numeros\n a la salida te mostrara los implicantes primos\n")
 	datos=minterminos()
 	datosBinarios=Mzeros(datos)
 	numUnos(datosBinarios)
