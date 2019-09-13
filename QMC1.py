@@ -185,8 +185,6 @@ def no_terms_repetidos(matriz_a_llenar,terminos_a_buscar):
 	
 def restar_listas(lista_max,lista_min):
 	tempo90=[]
-	#print("entemp90")
-	#print(lista_min)
 	cont=len(lista_max)
 	a=0
 	for j in range(0,cont):
@@ -202,11 +200,12 @@ def restar_listas(lista_max,lista_min):
 
 def implicantes_primos(matriz_con_form,ciclos,implicantes):
 	matriz_vac=[]
+
 	count=0
 	ciclics=ciclos
 	tempo80=[]
 	matriz_vac.append([])
-	terms=len(matriz_con_form)-1
+	terms=len(matriz_con_form)
 	lon=len(matriz_con_form[1])-1
 	tempo30=[]
 	for j in range (1,terms):
@@ -227,9 +226,14 @@ def implicantes_primos(matriz_con_form,ciclos,implicantes):
 						"""print(matriz_con_form[0][j-1])
 						print(matriz_con_form[0][k-1])
 						print(matriz_con_form[0])"""
+						
 						var1=matriz_con_form[0][j-1]
 						var2=matriz_con_form[0][k-1]
+						
 
+						
+						tempo80.append(var1)
+						tempo80.append(var2)
 						temp5=nuevos_terminos(var1,var2)
 						#print()
 						var100=no_terms_repetidos(matriz_vac[0],temp5)
@@ -246,6 +250,7 @@ def implicantes_primos(matriz_con_form,ciclos,implicantes):
 							matriz_vac[0].append(temp5)
 							matriz_vac.append(temp2)
 							count=count+1
+
 	tempo30=restar_listas(matriz_con_form[0],tempo80)
 	#print("TEMPO30")
 	#print(tempo30)
@@ -254,7 +259,7 @@ def implicantes_primos(matriz_con_form,ciclos,implicantes):
 	#print("implicantes\n")
 	#print(implicantes)
 	print("\n")
-	for i in matriz_vac:
+	for i in matriz_vac	:
 		print(i)
 	print("\n\n\n")
 	ciclos=ciclos-1
@@ -328,8 +333,8 @@ def formar_matriz_it(primerMatriz):
 		print(i)
 	print("\n\n\n")						
 	primos=implicantes_primos(matrizindice,ciclos-1,implicantes)
-	#print("ESTOS SON LOS IMPLICANTES PRIMOS\n")
-	#print(primos)
+	print("ESTOS SON LOS IMPLICANTES PRIMOS\n")
+	print(primos)
 
 
 
@@ -340,7 +345,7 @@ def formar_matriz_it(primerMatriz):
 
 
 def main():
-	print("Metodo Q-M-C\n")
+	print("Metodo Quine Mc Cluskey\n DISEÑO DIGITAL MODERNO \n Facultad de ingenieria, Universidad Nacional Autonoma De Mexico \n")
 	datos=minterminos()
 	datosBinarios=Mzeros(datos)
 	numUnos(datosBinarios)
