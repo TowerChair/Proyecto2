@@ -113,6 +113,173 @@ def suma_de_binarios(binario1,binario2):
 	else:
 		return termsum
 
+
+def verificar_pesos(pesos1,pesos2):
+	tam1=len(pesos1)
+	tam2=len(pesos2)
+	cont=0
+	if tam1==tam2:
+		for i in range(tam1):
+			for j in range(tam2):
+				if pesos1[i]==pesos2[j]:
+					cont=cont+1
+		if cont==tam1:
+			return 1
+		else: return 0
+	else: return 0 
+
+	
+def eliminar_repetidos(lis):
+	temporal=[]
+	for i in range(0,len(lis)):
+		cont=0
+		for j in range(0,len(temporal)):
+			if temporal[j]==lis[i]:
+				cont=cont+1
+		if cont==0:
+			temporal.append(lis[i])
+	return temporal
+
+"""def eliminar_repetidos2(lis2):
+	temporal=[]
+	for i in range(0,len(lis2[0])):
+		cont=0
+		for j in range(0,len(temporal)):
+			if temporal[j]==lis2[0][i]:
+				cont=cont+1
+		if cont==0:
+			temporal.append(lis[i])
+	print(temporal)
+	print("esto es de eliminar repetidos")
+	return temporal"""
+
+
+
+def nuevos_terminos(a,b):
+	termin=[]
+	termin2=[]
+	termin3=[]
+	termin=a
+	termin2=b
+	termin3=termin+termin2
+	termin3.sort()
+	termin3=eliminar_repetidos(termin3)
+	return termin3
+
+
+def agregar_pesos(terminos):
+	lista_vac=[]
+	for i in range(0,len(terminos)):
+		for j in range(len(terminos)):
+			if verificar_potencia(terminos[i],terminos[j])!=0:
+				lista_vac.append(verificar_potencia(terminos[i],terminos[j]))
+	lista_vac.sort()
+	lista_vac=eliminar_repetidos(lista_vac)
+	return lista_vac
+
+def no_terms_repetidos(matriz_a_llenar,terminos_a_buscar):
+	for i in range(len(matriz_a_llenar)):
+		if matriz_a_llenar[i]==terminos_a_buscar:
+			return 0
+		
+	
+def restar_listas(lista_max,lista_min):
+	tempo90=[]
+	#print("entemp90")
+	#print(lista_min)
+	cont=len(lista_max)
+	a=0
+	for j in range(0,cont):
+		a=0
+		for i in range(0,len(lista_min)):
+			if lista_min[i]==lista_max[j]:
+				a=a+1
+		if a==0:
+			tempo90.append(lista_max[j])
+	return tempo90
+
+
+
+def implicantes_primos(matriz_con_form,ciclos,implicantes):
+	matriz_vac=[]
+	count=0
+	ciclics=ciclos
+	tempo80=[]
+	matriz_vac.append([])
+	terms=len(matriz_con_form)-1
+	lon=len(matriz_con_form[1])-1
+	tempo30=[]
+	for j in range (1,terms):
+		for k in range(1,terms):
+			if matriz_con_form[k][lon]==matriz_con_form[j][lon]+1:
+				if verificar_pesos(matriz_con_form[j][0],matriz_con_form[k][0])!=0:
+					temp1=[]
+					temp2=[]
+					temp3=[]
+					temp4=[]
+					#temp1.append(primerMatriz[j][0])
+					#temp1.append(primerMatriz[k][0])
+					binar=suma_de_binarios(matriz_con_form[j],matriz_con_form[k])
+					if binar!=0:
+
+						temp5=[]
+
+						"""print(matriz_con_form[0][j-1])
+						print(matriz_con_form[0][k-1])
+						print(matriz_con_form[0])"""
+						var1=matriz_con_form[0][j-1]
+						var2=matriz_con_form[0][k-1]
+
+						temp5=nuevos_terminos(var1,var2)
+						#print()
+						var100=no_terms_repetidos(matriz_vac[0],temp5)
+						
+						if var100!=0:
+							
+							var3=matriz_con_form[0][j-1]
+							var4=matriz_con_form[0][k-1]
+							
+							temp4=agregar_pesos(temp5)
+							temp2.append(temp4)
+							temp2.extend(binar)
+							temp2.append(matriz_con_form[j][lon])
+							matriz_vac[0].append(temp5)
+							matriz_vac.append(temp2)
+							count=count+1
+	tempo30=restar_listas(matriz_con_form[0],tempo80)
+	#print("TEMPO30")
+	#print(tempo30)
+
+	implicantes.extend(tempo30)
+	#print("implicantes\n")
+	#print(implicantes)
+	print("\n")
+	for i in matriz_vac:
+		print(i)
+	print("\n\n\n")
+	ciclos=ciclos-1
+	#print("ESTO REALIZO CICLOOO")
+	if ciclos==1:
+		bart=implicantes
+		#return bart
+	else:
+		implicantes_primos(matriz_vac,ciclos,implicantes)
+	return implicantes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def formar_matriz_it(primerMatriz):
 	cubo=[]
 	primos=[]
@@ -122,9 +289,11 @@ def formar_matriz_it(primerMatriz):
 	lon=len(primerMatriz[1])
 	temp1=[]
 	temp2=[]
+	temp3=[]
 	matrizindice=[]
 	matrizindice.append([])
 	ciclos=primerMatriz[terms-1][lon-1]
+	implicantes=[]
 	for i in range(0,ciclos):
 			temp1=[]
 			temp2=[]
@@ -139,17 +308,28 @@ def formar_matriz_it(primerMatriz):
 							if verificar_potencia(primerMatriz[j][0],primerMatriz[k][0])!=0:
 								temp1=[]
 								temp2=[]
+								temp3=[]
+								temp4=[]
 								temp1.append(primerMatriz[j][0])
 								temp1.append(primerMatriz[k][0])
 								binar=suma_de_binarios(primerMatriz[j],primerMatriz[k])
 								if binar!=0:
-									temp2.append(verificar_potencia(primerMatriz[j][0],primerMatriz[k][0]))
+									temp4=(verificar_potencia(primerMatriz[j][0],primerMatriz[k][0]))
+									temp3.append(temp4)
+									temp2.append(temp3)
 									temp2.extend(binar)
 									temp2.append(i)
-									print(temp2)
+									#print(temp1 )
+									#print(temp2)
 									matrizindice[0].append(temp1)
 									matrizindice.append(temp2)
-	return matrizindice
+	print("\n")
+	for i in matrizindice:
+		print(i)
+	print("\n\n\n")						
+	primos=implicantes_primos(matrizindice,ciclos-1,implicantes)
+	#print("ESTOS SON LOS IMPLICANTES PRIMOS\n")
+	#print(primos)
 
 
 
@@ -165,7 +345,7 @@ def main():
 	datosBinarios=Mzeros(datos)
 	numUnos(datosBinarios)
 	ordenarUnos(datosBinarios)
-	data63=formar_matriz_it(datosBinarios)
+	formar_matriz_it(datosBinarios)
 	#implicantes(datosBinarios)
 
 
