@@ -1,12 +1,24 @@
 import math
+import time
 
-def minterminos():#Esta funcion inicializa una lista en la que se guardon los minterminos agregados
+def arr_to_int(dcs,num):
+	if num[0]=='*':
+		dcs.append(int(num[1]))
+		numel=int(num[1])
+	else:
+		numel=int(num[0])
+	return numel
+
+def minterminos(dontcares):#Esta funcion inicializa una lista en la que se guardon los minterminos agregados
 	mint=int(input("Cuantos minterminos tiene tu funcion:"))
 	print("\n")
 	mins=[]
 	for i in range(mint):
-		dat=int(input(f"agrega el elemento #:{i} a la lista de minterminos"))
-		mins.append(dat)
+		
+		dat_arr=input(f"agrega el elemento #:{i} a la lista de minterminos")
+		datarr1=dat_arr.split(" ")
+		dat_int=arr_to_int(dontcares,datarr1)
+		mins.append(dat_int)
 	return mins#Regresa la lista de minterminos 
 
 def num_Mayor(numerosX):#Encuentra el valor maximo de los minterminos 
@@ -43,11 +55,12 @@ def num_Bits(numRef):#Identifica cuantos bits serán necesariosa usar
 	return numBits#Regresa el numero de bits a usar 
 
 
-def Mzeros(data):#Crea una matriz en la que se guardan los minterminos en valor binario 
+def Mzeros(data,var,ceros):#Crea una matriz en la que se guardan los minterminos en valor binario 
 	tam=len(data)#Tamaño de la lista con los minterminos
 	mayormin=num_Mayor(data)#sr obtiene el mayor numero de los minterminos
 	bits=num_Bits(mayormin)#Se obtiene el numero de vits necesarios para pasar los minterminos a binarios 
-	ceros=[]#Crea una matriz vacia 
+	#ceros=[]#Crea una matriz vacia 
+	var.append(bits)
 	data2=data#Creamos una copia de los minterminos 
 	for i in range(tam):#Se crea un ciclo que va a iterar de acuerdo al numero de minterminos que tengamos
 		temp=[]#Se crea una lista vacia en la que se guardaran los digitos de nuestro numero binario
@@ -63,7 +76,7 @@ def Mzeros(data):#Crea una matriz en la que se guardan los minterminos en valor 
 			ref=ref/2
 			
 		ceros.append(temp)#Se agrega el numero bianrio a un arreglo para generar una matriz
-	return ceros# Regresa la matriz con los numeros binarios 
+	#return ceros# Regresa la matriz con los numeros binarios 
 
 def numUnos(binarios):#Cuenta el numero de unos que tiene cada numero binario y agrega ese numero en el ultimo digito de cada numero binario
 	tam=len(binarios)
@@ -183,18 +196,23 @@ def no_terms_repetidos(matriz_a_llenar,terminos_a_buscar):
 			return 0
 		
 	
-def restar_listas(lista_max,lista_min):
+def restar_listas(lista_max,lista_min,impls):
 	tempo90=[]
-	cont=len(lista_max)
+	tempo90.append([])
+	lista_max2=[]
+	lista_max2=lista_max[0]
+	print(lista_max2)
+	cont=len(lista_max2)
 	a=0
 	for j in range(0,cont):
 		a=0
 		for i in range(0,len(lista_min)):
-			if lista_min[i]==lista_max[j]:
+			if lista_min[i]==lista_max2[j]:
 				a=a+1
 		if a==0:
-			tempo90.append(lista_max[j])
-	return tempo90
+			impls[0].append(lista_max2[j])
+			impls.append(lista_max[j+1])
+	
 
 
 
@@ -251,11 +269,11 @@ def implicantes_primos(matriz_con_form,ciclos,implicantes):
 							matriz_vac.append(temp2)
 							count=count+1
 
-	tempo30=restar_listas(matriz_con_form[0],tempo80)
+	restar_listas(matriz_con_form,tempo80,implicantes)
 	#print("TEMPO30")
 	#print(tempo30)
 
-	implicantes.extend(tempo30)
+	#implicantes.extend(tempo30)
 	#print("implicantes\n")
 	#print(implicantes)
 	print("\n")
@@ -271,20 +289,6 @@ def implicantes_primos(matriz_con_form,ciclos,implicantes):
 		implicantes_primos(matriz_vac,ciclos,implicantes)
 	return implicantes
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def formar_matriz_it(primerMatriz):
 	cubo=[]
 	primos=[]
@@ -299,6 +303,7 @@ def formar_matriz_it(primerMatriz):
 	matrizindice.append([])
 	ciclos=primerMatriz[terms-1][lon-1]
 	implicantes=[]
+	implicantes.append([])
 	for i in range(0,ciclos):
 			temp1=[]
 			temp2=[]
@@ -335,26 +340,186 @@ def formar_matriz_it(primerMatriz):
 	primos=implicantes_primos(matrizindice,ciclos-1,implicantes)
 	print("ESTOS SON LOS IMPLICANTES PRIMOS\n")
 	print(primos)
+	return primos 
+
+def eliminar_dcs(lista,dcs):
+	t=len(lista)
+	cont=0
+	milist=[]
+	for i in range(0,t):
+		cont=0
+		for j in range(0,len(dcs)):
+			if lista[i]==dcs[j]:
+				cont=cont+1
+		if cont==0:
+			milist.append(lista[i])
+	
+	return milist
+
+
+def valores_mints(vals,dcs):
+	tam=len(vals)
+	mis_valores=[]
+	for i in range(0,tam):
+		long=len(vals[i])
+		for j in range(0,long):
+			mis_valores.append(vals[i][j])
+	mis_valores2=eliminar_repetidos(mis_valores)
+	numeros_sin_dc=eliminar_dcs(mis_valores2,dcs)
+	return numeros_sin_dc
+
+def gen_mat_cuad(fils,cols):
+	numfils=len(fils)
+	numcols=len(cols)
+	tempo300=[]
+	for i in range(0,numfils):
+		tempo2000=[]
+		for c in range(0,numcols):
+			tempo2000.append(0)
+		for j in range(0,len(fils[i])):
+			for k in range(0,len(cols)):
+				if fils[i][j]==cols[k]:
+					tempo2000[k]=1
+		tempo300.append(tempo2000)
+	return tempo300
+
+def implicantes_escenciales(matriz):
+	cont=0
+	datos=[]
+	for i in range(0,len(matriz[0])):
+		for j in range(0,len(matriz)):
+
+			if matriz[j][i]==1:
+				cont=cont+1
+				cont2=j
+		if cont==1:
+			datos.append(cont2)
+		
+		cont=0
+	rec=datos
+	
+	return rec
+
+def vals_escen(indices,valores,dcs):
+	matric_vac=[]
+	for i in range(0,len(indices)):
+		ints=indices[i]
+		long=len(valores[ints])
+		for j in range(0,long):
+			matric_vac.append(valores[ints][j])
+	numeros_sin_dc=eliminar_dcs(matric_vac,dcs)
+	numeros_sin_dc1=eliminar_repetidos(numeros_sin_dc)
+	numeros_sin_dc1.sort()
+	return numeros_sin_dc1
+
+def convertir_variable(datos,indices,vars):
+	tempo23=[]
+	a=97
+	for i in range(0,len(indices)):
+		if i>0:
+			tempo23.append(chr(43))
+		ints=indices[i]
+		for j in range(0,vars[0]):
+			
+			letra=97+(j)
+			if datos[ints+1][j+1]==1:
+				tempo23.append(chr(letra))
+			elif datos[ints+1][j+1]==0:
+				tempo23.append(chr(letra))
+				tempo23.append(chr(39))
+	res="".join(tempo23)
+	print("ESTA ES TU FUNCION MINIMIZADA :)")
+	print(res)
+
+def indices_faltantes(nums,fls,datos,indices):
+	inter=len(datos)
+	var20=[]
+	falta=[]
+	for i in range(0,inter):
+		cont=0
+		for j in indices:
+			if i==j:
+				cont=cont+1
+		if cont==0:
+			var20.append(i)
+	for i in range(0,len(nums)):
+		con99=0
+		for j in range(len(fls)):
+			if nums[i]==fls[j]:
+				con99=con99+1
+		if con99==0:
+			falta.append(nums[i])
+	con3=0
+	ned=len(falta)
+	for i in range(0,len(var20)):
+		con3=0
+		x=var20[i]
+		lon=len(datos[x])
+		
+		for j in range(0,ned):
+			
+			for k in range(0,lon):
+				if falta[j]==datos[x][k]:
+					con3=con3+1
+				if con3==ned:
+					return x 
+	
 
 
 
 
 
+
+
+
+
+def de_min_a_var(variables,data,dontcares):
+	numeros=valores_mints(data[0],dontcares)
+	numeros.sort()
+	matriz_cuad=gen_mat_cuad(data[0],numeros)
+	print(matriz_cuad)
+	imp_es=[]
+	esc1=implicantes_escenciales(matriz_cuad)
+	esc=eliminar_repetidos(esc1)
+	flags=vals_escen(esc,data[0],dontcares)
+	print(flags)
+	if numeros==flags:
+		
+		convertir_variable(data,esc,variables)
+
+	else:
+		esc.sort()
+		esc300=indices_faltantes(numeros,flags,data[0],esc)
+		esc.append(esc300)
+		convertir_variable(data,esc,variables)
 
 #def ecuacion_final():
 
 
 def main():
 	print("Metodo Quine Mc Cluskey\n DISEÑO DIGITAL MODERNO \n Facultad de ingenieria, Universidad Nacional Autonoma De Mexico \n")
-	print("Instrucciones\n 1.-Ingresa el numero de minterminos\n ingresa los minterminos solo con numeros\n a la salida te mostrara los implicantes primos\n")
-	datos=minterminos()
-	datosBinarios=Mzeros(datos)
+	
+	print("Elaborado por:\n Dominguez Reyez Cynthia Berenice\nEspinoza de los Monteros Camarillo Pamela\nTorrecillaJimenez Aaron Israel")
+	print("NOTA:SI DESEAS QUE EL PROGRAMA FUNCIONE DE LA MANERA OPTIMA SIGUE LAS INSTRUCCIONES AL PIE DE LA LETRA")
+	print("Instrucciones\n 1.-Ingresa el numero de minterminos \n ingresa los minterminos solo con numeros NOTA:LOS NUMEROS INGRESADOS DEBEN SER MENORES A 4096 YA QUE EL PROGRAMA ESTA DISEÑADO PARA UN MAXIMO DE 11 VARIABLES\n ")
+	print("Si deseas agregar un valor con DC(*) lo deberas hacer poniendo primero el *, despues un espacio y al final el valor numerico, por ejemplo (* 23)")
+	print("A la salida te mostrara las tablas que se fueron formando a traves de las iteraciones,los implicantes primos y la funcion minimizada")
+	donts=[]
+	num_variables=[]
+	datos=minterminos(donts)
+	datosBinarios=[]
+	Mzeros(datos,num_variables,datosBinarios)
 	numUnos(datosBinarios)
 	ordenarUnos(datosBinarios)
-	formar_matriz_it(datosBinarios)
+	datos_finales=formar_matriz_it(datosBinarios)
 	#implicantes(datosBinarios)
-
-
+	print("*****************************************************************")
+	print("los donts cares son estos")
+	print(donts)
+	#func_minimizada=
+	de_min_a_var(num_variables,datos_finales,donts)
+	#print(func_minimizada)
+	time.sleep(20)
 main()
 
 
